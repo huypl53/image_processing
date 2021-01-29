@@ -9,8 +9,11 @@
 import numpy as np
 import cv2
 import sys
-sys.path.insert(1, '../../')
+import os
 
+CURRENT_DIR = os.path.dirname(__file__) if '__file__' in dir() else '.'
+if CURRENT_DIR == '.':
+	print('Warning: Program not run by source script!')
 # %%
 # The general power-law
 # transformation is given by
@@ -35,7 +38,7 @@ def root(image: np.ndarray = None,
     return np.uint8(image)
 # %%
 if __name__ == "__main__":
-    image = cv2.imread('../Fig0222(a)(face).tif')
+    image = cv2.imread(os.path.join( CURRENT_DIR,'../Fig0222(a)(face).tif'))
     # %%
     cv2.imshow('Origin', image)
     cv2.imshow('Power', power(image, 1.2))

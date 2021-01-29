@@ -3,13 +3,19 @@
 # File              : linear.py
 # Author            : phamlehuy53 <unknownsol98@gmail>
 # Date              : 22.01.2021
-# Last Modified Date: 22.01.2021
+# Last Modified Date: 29.01.2021
 # Last Modified By  : phamlehuy53 <unknownsol98@gmail>
 # %%
 import numpy as np
 import cv2
 import sys
-sys.path.insert(1, '../../')
+import os
+
+CURRENT_DIR = os.path.dirname(__file__) if '__file__' in dir() else '.'
+if CURRENT_DIR == '.':
+        print('Warning: Program not run by source script!')
+sys.path.insert(1, os.path.join( CURRENT_DIR, '../../'))
+
 # %%
 def negative(image: np.ndarray = None):
     if not image.any():
@@ -27,11 +33,11 @@ def identity(image: np.ndarray = None):
 
 # %%
 if __name__ == "__main__":
-    img = cv2.imread('../Fig0222(a)(face).tif')
-    img.shape
+    image = cv2.imread(os.path.join(CURRENT_DIR, '../Fig0222(a)(face).tif'), 0)
+    # img.shape
     # %% [Negative test]
-    cv2.imshow('Origin', img)
-    cv2.imshow('Negatived', negative(img))
+    cv2.imshow('Origin', image)
+    cv2.imshow('Negatived', negative(image))
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 

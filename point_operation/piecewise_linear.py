@@ -3,13 +3,17 @@
 # File              : piecewise_linear.py
 # Author            : phamlehuy53 <unknownsol98@gmail>
 # Date              : 22.01.2021
-# Last Modified Date: 24.01.2021
+# Last Modified Date: 29.01.2021
 # Last Modified By  : phamlehuy53 <unknownsol98@gmail>
 # %%
 import numpy as np
 import cv2
+import os
 import sys
-sys.path.insert(1, '../../')
+CURRENT_DIR = os.path.dirname(__file__) if '__file__' in dir() else '.'
+if CURRENT_DIR == '.':
+        print('Warning: Program not run by source script!')
+sys.path.insert(1, os.path.join( CURRENT_DIR, '../../'))
 
 import image_processing
 L = image_processing.L
@@ -45,7 +49,7 @@ def stretch_constrast(image: np.ndarray,
     return np.uint8(image)
 # %%
 if __name__ == "__main__":
-    image = cv2.imread('../Fig0222(a)(face).tif', 0)
+    image = cv2.imread(os.path.join(CURRENT_DIR, '../Fig0222(a)(face).tif'), 0)
     # %%
     cv2.imshow('Origin', image)
     # cv2.imshow('Stretched',

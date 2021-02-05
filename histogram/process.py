@@ -107,7 +107,6 @@ def match_hist(src_image: np.ndarray, dst_image: np.ndarray):
 # %%
 if __name__ == "__main__":
     image = cv2.imread(os.path.join(CURRENT_DIR, '../Fig0222(a)(face).tif'), 0)
-    # print(os.path.join(CURRENT_DIR, '../Fig0222(a)(face).tif'))
     hist_match_image = cv2.imread(os.path.join(CURRENT_DIR, '../download-(58).jpeg'), cv2.IMREAD_GRAYSCALE)
     hist_match_image = cv2.resize( hist_match_image, tuple(np.array(hist_match_image.shape[2::-1])//7) )
     # %%

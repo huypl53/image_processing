@@ -52,23 +52,46 @@ def rgb2hsv(rgb: np.ndarray):
     hsv[maxv != 0, 1] = (1 - minv / (maxv + np.spacing(1)))[maxv != 0]
     hsv[..., 2] = maxv
     return hsv
+
+def segment(image: np.ndarray, tg_region: np.ndarray, th=0.9):
+    S = tg_region.reshape((-1, 3))
+    m = np.mean(S, axis=0)
+    # print(f"m: {m}" )
+    C = np.cov(S.T)
+    # print(f"C: {C}")
+    mask = np.zeros(image.shape[:2])
+    C_i = np.linalg.inv(C)
+    h, w = image.shape[:2]
+    for i in range(h):
+        for j in range(w):
+            sim = (image[i, j, ...] - m) @ C_i @ (image[i, j , ...]-m).T < th
+            if sim:
+                mask[i, j] = 255
+    return mask
+    
 # %%
 if __name__ == "__main__":
     im_list = [cv2.imread(f) for f in glob.glob('./*.jpeg')]
     print(f"{len(im_list)} images loaded!")
-    im = im_list[0]
-    im = cv2.resize(im, (300, int(im.shape[0]*(300/im.shape[1]))))
-# %%
-    cv2.imshow('Origin', im)
+    for im in im_list:
+        # im = im_list[0]
+        im = cv2.resize(im, (300, int(im.shape[0]*(300/im.shape[1]))))
+        cv2.imshow('Origin', im)
+        res_ycrcb = rgb2ycbcr(im)
+        cv2_ycrcb = cv2.cvtColor(im, cv2.COLOR_RGB2YCrCb)
+        res_hsv = rgb2hsv(im)
+        cv2_hsv = cv2.cvtColor(im, cv2.COLOR_RGB2HSV)
+        cv2.imshow('My ycrcb', res_ycrcb)
+        cv2.imshow('cv2 ycrcb', cv2_ycrcb)
+        cv2.imshow('My hsv', res_hsv)
+        cv2.imshow('cv2 hsv', cv2_hsv)
 
-    res_ycrcb = rgb2ycbcr(im)
-    cv2_ycrcb = cv2.cvtColor(im, cv2.COLOR_RGB2YCrCb)
-
-    res_hsv = rgb2hsv(im)
-    cv2_hsv = cv2.cvtColor(im, cv2.COLOR_RGB2HSV)
-    cv2.imshow('My ycrcb', res_ycrcb)
-    cv2.imshow('cv2 ycrcb', cv2_ycrcb)
-    cv2.imshow('My hsv', res_hsv)
-    cv2.imshow('cv2 hsv', cv2_hsv)
-    cv2.waitKey(0)
+        h, w = im.shape[:2]
+        tl = (w//6*4, h//6*4)
+        br = (w//6*5, h//6*5)
+        rg = im[tl[1]: br[1], tl[0]: br[0]]
+        seg = segment(im, rg, th=3.9)
+        cv2.imshow('selected region', cv2.rectangle(im.copy(), tl, br, (255), 2))
+        cv2.imshow('Segmented', seg)
+        cv2.waitKey(0)
     cv2.destroyAllWindows()

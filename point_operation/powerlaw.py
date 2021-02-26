@@ -3,7 +3,7 @@
 # File              : powerlaw.py
 # Author            : phamlehuy53 <unknownsol98@gmail>
 # Date              : 22.01.2021
-# Last Modified Date: 22.01.2021
+# Last Modified Date: 05.02.2021
 # Last Modified By  : phamlehuy53 <unknownsol98@gmail>
 # %%
 import numpy as np

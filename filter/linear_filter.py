@@ -3,7 +3,7 @@
 # File              : linear_filter.py
 # Author            : phamlehuy53 <unknownsol98@gmail>
 # Date              : 29.01.2021
-# Last Modified Date: 04.02.2021
+# Last Modified Date: 05.02.2021
 # Last Modified By  : phamlehuy53 <unknownsol98@gmail>
 
 # %%
@@ -27,7 +27,7 @@ def rotate_kernel(kernel: np.ndarray):
 
     Return: correlation mask
     """
-    assert kernel.shape[0]%2==1 and kernel.shape[1]%2==1
+    # assert kernel.shape[0]%2==1 and kernel.shape[1]%2==1
     return kernel[::-1, ::-1, ...]
 
 def conv2d(src_image: np.ndarray, kernel: np.ndarray):
@@ -78,6 +78,15 @@ if __name__ == "__main__":
     edge_krnl = np.array([[-2, 0, 2],
                           [-2, 0, 2],
                           [-2, 0, 2]])
+
+# %%
+    even_krnl= np.array([[1,7,0,-3],
+                         [1,7,0,-3]])
+
+    test_even = conv2d(image, even_krnl)
+    cv2.imshow('Even kernel', test_even)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 # %%
     low_pass_image = conv2d(image, low_pass_krnl)
     edge_detect_image = conv2d(image, edge_krnl)
